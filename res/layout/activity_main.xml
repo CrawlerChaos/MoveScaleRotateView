@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.oo.movescaleviewdemo.MainActivity" >
+
+    <Button 
+        android:id="@+id/addImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  +  "
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:textSize="20dp"
+        />
+    <AbsoluteLayout 
+        android:id="@+id/canvas_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</RelativeLayout>
