@@ -10,12 +10,12 @@ import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 
-import com.oo.view.MoveScaleView;
+import com.oo.view.MoveScaleRotateView;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
-	private MoveScaleView moveScaleView;
-    public MoveScaleView onFocusView;
+	private MoveScaleRotateView moveScaleView;
+    public MoveScaleRotateView onFocusView;
     public AbsoluteLayout canvas_layout;
     private Button addImage;
 
@@ -39,8 +39,8 @@ public class MainActivity extends Activity {
     
     private Bitmap scaleBitmap(View parent,Bitmap bitmap,Context context){
     	float density = context.getResources().getDisplayMetrics().density;
-    	int maxWidth = (int)(parent.getWidth() - density * (MIN_MARGIN_DP * 2 + MoveScaleView.IMAGE_MARGIN * 2 + MoveScaleView.BUTTON_SIZE));
-    	int maxHeigth = (int)(parent.getHeight() - density * (MIN_MARGIN_DP * 2 + MoveScaleView.IMAGE_MARGIN * 2 + MoveScaleView.BUTTON_SIZE));
+    	int maxWidth = (int)(parent.getWidth() - density * (MIN_MARGIN_DP * 2 + MoveScaleRotateView.IMAGE_MARGIN * 2 + MoveScaleRotateView.BUTTON_SIZE));
+    	int maxHeigth = (int)(parent.getHeight() - density * (MIN_MARGIN_DP * 2 + MoveScaleRotateView.IMAGE_MARGIN * 2 + MoveScaleRotateView.BUTTON_SIZE));
     	if(maxWidth < bitmap.getWidth() || maxHeigth < bitmap.getHeight()){
     		float widthRatio = bitmap.getWidth() * 1.0f / maxWidth;
     		float heightRatio = bitmap.getHeight() * 1.0f / maxHeigth ;
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.defalut_img);
 		}
     	bitmap = scaleBitmap(canvas_layout, bitmap, this);
-        moveScaleView = new MoveScaleView(this);
+        moveScaleView = new MoveScaleRotateView(this);
         if (onFocusView != null) {
             onFocusView.unfocus();
             onFocusView = null;

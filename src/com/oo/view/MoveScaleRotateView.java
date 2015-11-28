@@ -19,7 +19,7 @@ import com.oo.movescaleviewdemo.R;
 
 
 @SuppressWarnings("deprecation")
-public class MoveScaleView extends AbsoluteLayout {
+public class MoveScaleRotateView extends AbsoluteLayout {
 	
 	public final static int IMAGE_MARGIN = 10;
 	public final static int BUTTON_SIZE = 30;
@@ -42,12 +42,12 @@ public class MoveScaleView extends AbsoluteLayout {
 	private float anglePauseDelta = 3.0f;
     private boolean isFocus;
 
-	public MoveScaleView(Context context, AttributeSet attrs) {
+	public MoveScaleRotateView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
 	}
 	
-	public MoveScaleView(Context context) {
+	public MoveScaleRotateView(Context context) {
 		super(context);
 		init(context);
 	}
@@ -120,7 +120,7 @@ public class MoveScaleView extends AbsoluteLayout {
 			
 			@Override
 			public void onClick(View v) {
-					if (context.onFocusView != MoveScaleView.this || !isFocus) {
+					if (context.onFocusView != MoveScaleRotateView.this || !isFocus) {
                         if (context.onFocusView != null)
 						    context.onFocusView.unfocus();
 						focus();
@@ -131,7 +131,7 @@ public class MoveScaleView extends AbsoluteLayout {
 			
 			@Override
 			public void onClick(View arg0) {
-				parent.removeView(MoveScaleView.this);
+				parent.removeView(MoveScaleRotateView.this);
 			}
 		});
 	}
@@ -227,16 +227,16 @@ public class MoveScaleView extends AbsoluteLayout {
 		@Override
 		public boolean onTouch(View arg0, MotionEvent arg1) {
 			
-			if (context.onFocusView != null && context.onFocusView != MoveScaleView.this) {
+			if (context.onFocusView != null && context.onFocusView != MoveScaleRotateView.this) {
 				return false;
 			}
 			
 			switch (arg1.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				moveScaleViewTop = MoveScaleView.this.getTop();
-				moveScaleViewBottom = MoveScaleView.this.getBottom();
-				moveScaleViewRight = MoveScaleView.this.getRight();
-				moveScaleViewLeft = MoveScaleView.this.getLeft();
+				moveScaleViewTop = MoveScaleRotateView.this.getTop();
+				moveScaleViewBottom = MoveScaleRotateView.this.getBottom();
+				moveScaleViewRight = MoveScaleRotateView.this.getRight();
+				moveScaleViewLeft = MoveScaleRotateView.this.getLeft();
 				setCenter();
                 startX = (int)arg1.getRawX();
 				startY = (int)arg1.getRawY();
