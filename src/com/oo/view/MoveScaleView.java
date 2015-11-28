@@ -3,7 +3,6 @@ package com.oo.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -22,11 +21,12 @@ import com.oo.movescaleviewdemo.R;
 @SuppressWarnings("deprecation")
 public class MoveScaleView extends AbsoluteLayout {
 	
-	private final static int IMAGE_MARGIN = 10;
-	private final static int BUTTON_SIZE = 30;
+	public final static int IMAGE_MARGIN = 10;
+	public final static int BUTTON_SIZE = 30;
 	private ImageView delete_btn,bias_btn,image;
 	private RelativeLayout content_layout;
 	private Point center;
+	private int location[] = new int[2];
 	private LayoutParams move_scale_layout_params,delete_params,bias_params,content_params;
 	private RelativeLayout.LayoutParams image_params;
 	private DisplayMetrics displayMetrics;
@@ -70,11 +70,8 @@ public class MoveScaleView extends AbsoluteLayout {
 	}
 	
 	public void setImage(Bitmap bitmap){
-		if (bitmap == null) {
-			bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.defalut_img);
-		}
-		image_width = Math.round(bitmap.getWidth() / 4 * displayMetrics.density);
-		imgae_height = Math.round(bitmap.getHeight() / 4 * displayMetrics.density);
+		image_width = bitmap.getWidth();
+		imgae_height = bitmap.getHeight();
 		move_scale_layout_params = (LayoutParams)this.getLayoutParams();
 		move_scale_layout_params.height = size_btn  + imgae_height + image_margin * 2;
 		move_scale_layout_params.width = size_btn  + image_width + image_margin * 2;
@@ -142,7 +139,6 @@ public class MoveScaleView extends AbsoluteLayout {
 	void moveOrScale(View view,int scaleX,int scaleY,int translationX,int translationY,float rotation){
 		
 		if (view == bias_btn) {
-			//scaleY = -scaleX;
 			setRotation(getAngleByPauseDelta(rotation));
 			if ( moveScaleViewBottom - moveScaleViewTop +scaleY * 2 < size_btn * 2) {
 				return ;
@@ -203,8 +199,9 @@ public class MoveScaleView extends AbsoluteLayout {
 		if (center == null) {
 			 center = new Point();
 		 }
-		 center.x = (moveScaleViewRight + moveScaleViewLeft) / 2;
-		 center.y = (moveScaleViewTop + moveScaleViewBottom) / 2;
+		 getLocationOnScreen(location);
+		 center.x = location[0] + (moveScaleViewRight - moveScaleViewLeft) / 2;
+		 center.y = location[1] + (moveScaleViewBottom - moveScaleViewTop) / 2;
 	}
 	
 	public void focus(){
