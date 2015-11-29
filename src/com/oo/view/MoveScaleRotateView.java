@@ -1,10 +1,8 @@
 package com.oo.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
-import com.oo.movescaleviewdemo.MainActivity;
 import com.oo.movescaleviewdemo.R;
 
 
@@ -37,33 +34,25 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 	private double startR,endR,ratioRY,ratioRX;
 	private int moveScaleViewTop,moveScaleViewBottom,moveScaleViewRight,moveScaleViewLeft;
 	private int moveScaleWidth,moveScaleHeight;
-	private MainActivity context;
-	private AbsoluteLayout parent;
+	private CanvasLayout parent;
 	private float anglePauseDelta = 3.0f;
     private boolean isFocus;
 
-	public MoveScaleRotateView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
-	}
-	
-	public MoveScaleRotateView(Context context) {
+	public MoveScaleRotateView(Context context,CanvasLayout parent) {
 		super(context);
-		init(context);
+		init(context,parent);
 	}
 	
 	
-	void init(Context context){
-		this.context = (MainActivity)context;
-		parent = this.context.canvas_layout;
+	void init(Context context,CanvasLayout parent){
+		this.parent = parent;
 		content_layout = new RelativeLayout(context);
 		image  = new ImageView(context);
 		delete_btn  = new ImageView(context);
 		bias_btn  = new ImageView(context);
-		displayMetrics = new DisplayMetrics();
+		displayMetrics = context.getResources().getDisplayMetrics();
 		angle = 0.0f;
 		buttonTouchLisener = new ButtonTouchLisener();
-		((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		size_btn = Math.round(BUTTON_SIZE * displayMetrics.density);
 		content_margin = Math.round(BUTTON_SIZE * displayMetrics.density / 2);
 		image_margin = Math.round(IMAGE_MARGIN * displayMetrics.density);
@@ -99,10 +88,9 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		this.addView(content_layout, content_params);
 	}
 	
-	void addButton(){
+	private void addButton(){
 		delete_params = new LayoutParams(size_btn, size_btn,0,imgae_height + image_margin * 2);
 		bias_params = new LayoutParams(size_btn, size_btn,image_width + image_margin * 2,0);
-		
 		delete_btn.setImageResource(R.drawable.move_scale_image_delete_btn);
 		bias_btn.setImageResource(R.drawable.move_scale_image_bias_btn);
 		bias_btn.setLayoutParams(bias_params);
@@ -111,7 +99,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		this.addView(delete_btn);
 	}
 	
-	void setLisener(){
+	private void setLisener(){
 		bias_btn.setClickable(true);
 		image.setClickable(true);
 		bias_btn.setOnTouchListener(buttonTouchLisener);
@@ -120,9 +108,9 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 			
 			@Override
 			public void onClick(View v) {
-					if (context.onFocusView != MoveScaleRotateView.this || !isFocus) {
-                        if (context.onFocusView != null)
-						    context.onFocusView.unfocus();
+					if (parent.onFocusView != MoveScaleRotateView.this || !isFocus) {
+                        if (parent.onFocusView != null)
+                        	parent.onFocusView.unfocus();
 						focus();
 					}
 			}
@@ -136,7 +124,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		});
 	}
 	
-	void moveOrScale(View view,int scaleX,int scaleY,int translationX,int translationY,float rotation){
+	private void moveOrScale(View view,int scaleX,int scaleY,int translationX,int translationY,float rotation){
 		
 		if (view == bias_btn) {
 			setRotation(getAngleByPauseDelta(rotation));
@@ -151,7 +139,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		reLocationChildView();
 	}
 
-	void reLocationChildView(){
+	private void reLocationChildView(){
 		 moveScaleWidth = getWidth();
 		 moveScaleHeight = getHeight();
 		 delete_btn.layout(0,moveScaleHeight-size_btn,size_btn,moveScaleHeight);
@@ -161,7 +149,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		 
 	}
 	
-	void saveParmas(){
+	private void saveParmas(){
 		move_scale_layout_params = (LayoutParams)this.getLayoutParams();
 		delete_params = (LayoutParams)delete_btn.getLayoutParams();
 		bias_params = (LayoutParams)bias_btn.getLayoutParams();
@@ -210,7 +198,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		content_layout.setBackgroundResource(R.drawable.move_scale_content_border);
 		parent.removeView(this);
 		parent.addView(this);
-		context.onFocusView = this;
+		parent.onFocusView = this;
         isFocus = true;
 		
 	}
@@ -227,7 +215,7 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		@Override
 		public boolean onTouch(View arg0, MotionEvent arg1) {
 			
-			if (context.onFocusView != null && context.onFocusView != MoveScaleRotateView.this) {
+			if (parent.onFocusView != null && parent.onFocusView != MoveScaleRotateView.this) {
 				return false;
 			}
 			
