@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -187,9 +188,9 @@ public class MoveScaleRotateView extends AbsoluteLayout {
 		if (center == null) {
 			 center = new Point();
 		 }
-		 getLocationOnScreen(location);
-		 center.x = location[0] + (moveScaleViewRight - moveScaleViewLeft) / 2;
-		 center.y = location[1] + (moveScaleViewBottom - moveScaleViewTop) / 2;
+		 ((View)getParent()).getLocationOnScreen(location);
+		 center.x = location[0] + (moveScaleViewRight + moveScaleViewLeft) / 2;
+		 center.y = location[1] + (moveScaleViewBottom + moveScaleViewTop) / 2;
 	}
 	
 	public void focus(){
